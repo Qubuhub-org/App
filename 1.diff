@@ -1,0 +1,385 @@
+diff --git a/.github/workflows/cmake-single-platform.yml b/.github/workflows/cmake-single-platform.yml
+new file mode 100644
+index 0000000..0ac33d9
+--- /dev/null
++++ b/.github/workflows/cmake-single-platform.yml
+@@ -0,0 +1,39 @@
++# This starter workflow is for a CMake project running on a single platform. There is a different starter workflow if you need cross-platform coverage.
++# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
++name: CMake on a single platform
++
++on:
++  push:
++    branches: [ "main" ]
++  pull_request:
++    branches: [ "main" ]
++
++env:
++  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
++  BUILD_TYPE: Release
++
++jobs:
++  build:
++    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
++    # You can convert this to a matrix build if you need cross-platform coverage.
++    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
++    runs-on: ubuntu-latest
++
++    steps:
++    - uses: actions/checkout@v4
++
++    - name: Configure CMake
++      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
++      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
++      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
++
++    - name: Build
++      # Build your program with the given configuration
++      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
++
++    - name: Test
++      working-directory: ${{github.workspace}}/build
++      # Execute tests defined by the CMake configuration.
++      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
++      run: ctest -C ${{env.BUILD_TYPE}}
++
+diff --git a/.vscodeignore b/.vscodeignore
+new file mode 100644
+index 0000000..5465b12
+--- /dev/null
++++ b/.vscodeignore
+@@ -0,0 +1,3 @@
++**/*.ts
++**/tsconfig.json
++!file.ts
+diff --git a/App_data.opam b/App_data.rego
+similarity index 100%
+rename from App_data.opam
+rename to App_data.rego
+diff --git a/Db.jsx b/Db.jsx
+new file mode 100644
+index 0000000..6ff2d40
+--- /dev/null
++++ b/Db.jsx
+@@ -0,0 +1,25 @@
++const db = {
++  users: [],
++  projects: [],
++  wallets: [],
++  ai_agents: []
++};
++
++export const get = (collection) => db[collection];
++
++export const insert = (collection, record) => {
++  db[collection].push(record);
++  return record;
++};
++
++export const update = (collection, id, updates) => {
++  const item = db[collection].find(r => r.id === id);
++  if (item) Object.assign(item, updates);
++  return item;
++};
++
++export const remove = (collection, id) => {
++  db[collection] = db[collection].filter(r => r.id !== id);
++};
++
++export default db;
+diff --git a/Publisher/package.jsom b/Publisher/package.jsom
+new file mode 100644
+index 0000000..9fb4995
+--- /dev/null
++++ b/Publisher/package.jsom
+@@ -0,0 +1,11 @@
++{
++  "name": "uuid",
++  "version": "0.0.1",
++  "publisher": "seriki yakub",
++  "engines": {
++    "vscode": "0.10.x"
++  },
++  "scripts": {
++    "vscode:prepublish": "tsc"
++  }
++}
+diff --git a/api.dev.name.com/sereserved_domains.json b/api.dev.name.com/sereserved_domains.json
+deleted file mode 100644
+index dcad1a1..0000000
+--- a/api.dev.name.com/sereserved_domains.json
++++ /dev/null
+@@ -1 +0,0 @@
+-{"error_code":"ERR_NGROK_200","status_code":403,"msg":"The ngrok API requires that you set the Authorization header for authentication. Your API keys and instructions are available on your dashboard: https://dashboard.ngrok.com/api-keys","details":{"operation_id":"op_386ZEK0avpeu6pWmxOjDXIIKXxS"}}
+diff --git a/api/dev/name/com-test/domains.json b/api/dev/name/com-test/domains.json
+new file mode 100644
+index 0000000..8b13789
+--- /dev/null
++++ b/api/dev/name/com-test/domains.json
+@@ -0,0 +1 @@
++
+diff --git a/bash.sh b/bash.sh
+new file mode 100644
+index 0000000..3c75e48
+--- /dev/null
++++ b/bash.sh
+@@ -0,0 +1,19 @@
++npm install -g @vscode/vsce
++$ cd myExtension
++$ vsce package
++# myExtension.vsix generated
++$ vsce publish
++# <publisher id>.myExtension published to VS Code Marketplace
++vsce login <publisher id>
++
++https://marketplace.visualstudio.com/manage/publishers/
++Personal Access Token for publisher '<publisher id>': ****************************************************
++
++The Personal Access Token verification succeeded for the publisher '<publisher id>'.
++vsce publish minor
++# if you use VS Code
++code --install-extension my-extension-0.0.1.vsix
++
++# if you use VS Code Insiders
++code-insiders --install-extension my-extension-0.0.1.vsix
++
+diff --git a/db.json b/db.json
+new file mode 100644
+index 0000000..ec6828b
+--- /dev/null
++++ b/db.json
+@@ -0,0 +1,66 @@
++{
++  "users": [],
++  "organizations": [],
++  "workspaces": [],
++  "projects": [],
++  "repositories": [],
++  "files": [],
++  "folders": [],
++
++  "ai_models": [],
++  "ai_agents": [],
++  "ai_tools": [],
++  "prompts": [],
++  "conversations": [],
++  "messages": [],
++  "memories": [],
++
++  "blockchains": [],
++  "wallets": [],
++  "tokens": [],
++  "nfts": [],
++  "transactions": [],
++  "smart_contracts": [],
++  "domains": [],
++
++  "marketplace": [],
++  "subscriptions": [],
++  "plans": [],
++  "licenses": [],
++  "payments": [],
++  "invoices": [],
++
++  "api_keys": [],
++  "webhooks": [],
++  "integrations": [],
++  "deployments": [],
++  "builds": [],
++  "logs": [],
++
++  "storage": [],
++  "assets": [],
++  "documents": [],
++  "media": [],
++
++  "notifications": [],
++  "activities": [],
++  "audit_logs": [],
++  "analytics": [],
++
++  "posts": [],
++  "comments": [],
++  "announcements": [],
++  "feedback": [],
++
++  "settings": {
++    "theme": "dark",
++    "language": "en",
++    "timezone": "Africa/Lagos"
++  },
++
++  "profile": {
++    "name": "SERIKI WALTER YAKUB",
++    "company": "QUBUHUB/web4",
++    "developer": true
++  }
++}
+diff --git a/db.xquery b/db.xquery
+new file mode 100644
+index 0000000..00e53d1
+--- /dev/null
++++ b/db.xquery
+@@ -0,0 +1,16 @@
++json-doc("db.json").users[]
++count(json-doc("db.json").users[])
++for $u in json-doc("db.json").users[]
++where $u.age > 16
++return $u
++for $u in json-doc("db.json").users[]
++return {
++  "username": $u.name,
++  "isAdult": $u.age >= 18
++}
++for $u in json-doc("db.json").users[]
++group by $age := $u.age
++return {
++  "age": $age,
++  "count": count($u)
++}
+diff --git a/workspace/Db/Db.js b/workspace/Db/Db.js
+new file mode 100644
+index 0000000..e430bab
+--- /dev/null
++++ b/workspace/Db/Db.js
+@@ -0,0 +1,68 @@
++// db.js
++
++const db = {
++  users: [
++    {
++      id: 1,
++      username: "kubulee",
++      name: "Seriki Yakub",
++      role: "owner"
++    }
++  ],
++
++  organizations: [
++    {
++      id: 1,
++      name: "QUBUHUB"
++    }
++  ],
++
++  projects: [
++    {
++      id: 1,
++      name: "Aura",
++      description: "AI Development Platform"
++    },
++    {
++      id: 2,
++      name: "Fadaka",
++      description: "Blockchain Platform"
++    }
++  ],
++
++  ai_agents: [],
++  ai_models: [],
++  conversations: [],
++  messages: [],
++
++  wallets: [],
++  tokens: [],
++  smart_contracts: [],
++  transactions: [],
++
++  repositories: [],
++  files: [],
++  deployments: [],
++
++  domains: [],
++  dns_records: [],
++
++  marketplace: [],
++  subscriptions: [],
++  payments: [],
++
++  notifications: [],
++  analytics: [],
++
++  settings: {
++    theme: "dark",
++    language: "en"
++  },
++
++  profile: {
++    name: "Seriki Yakub",
++    company: "QUBUHUB"
++  }
++};
++
++module.exports = db;
+diff --git a/workspace/Db/JSONiq b/workspace/Db/JSONiq
+new file mode 100644
+index 0000000..2bab5df
+--- /dev/null
++++ b/workspace/Db/JSONiq
+@@ -0,0 +1,66 @@
++{
++  "users": [],
++  "organizations": [],
++  "workspaces": [],
++  "projects": [],
++  "repositories": [],
++  "files": [],
++  "folders": [],
++
++  "ai_models": [],
++  "ai_agents": [],
++  "ai_tools": [],
++  "prompts": [],
++  "conversations": [],
++  "messages": [],
++  "memories": [],
++
++  "blockchains": [],
++  "wallets": [],
++  "tokens": [],
++  "nfts": [],
++  "transactions": [],
++  "smart_contracts": [],
++  "domains": [],
++
++  "marketplace": [],
++  "subscriptions": [],
++  "plans": [],
++  "licenses": [],
++  "payments": [],
++  "invoices": [],
++
++  "api_keys": [],
++  "webhooks": [],
++  "integrations": [],
++  "deployments": [],
++  "builds": [],
++  "logs": [],
++
++  "storage": [],
++  "assets": [],
++  "documents": [],
++  "media": [],
++
++  "notifications": [],
++  "activities": [],
++  "audit_logs": [],
++  "analytics": [],
++
++  "posts": [],
++  "comments": [],
++  "announcements": [],
++  "feedback": [],
++
++  "settings": {
++    "theme": "dark",
++    "language": "en",
++    "timezone": "Africa/Lagos"
++  },
++
++  "profile": {
++    "name": "KUBU LEE",
++    "company": "QUBUHUB",
++    "developer": true
++  }
++}
